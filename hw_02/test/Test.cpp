@@ -13,7 +13,7 @@
 
     void Test::showFinalResult(){
     	if (failedNum == 0)
-    		printf("%s\n", "All tests passed");
+    		printf("%s %d %s\n", "All ", totalNum, " tests passed");
     	else
     		printf("%s %d %s %d %s\n", "Failed", failedNum, "of", totalNum, "tests");
     };

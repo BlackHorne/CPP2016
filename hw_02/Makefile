@@ -1,6 +1,6 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall -Werror -std=c++03 -Iinclude
-LDFLAGS = 
+CXXFLAGS = -O2 -Wall -Werror -std=c++03 -Iinclude -lncurses
+LDFLAGS = -lncurses
 
 EXE = main
 TEST = board_test

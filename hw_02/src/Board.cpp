@@ -1,5 +1,4 @@
 #include "Board.h"
-#include <stdio.h>
 
 	Board::Board(){
 		table = new int* [10];
@@ -9,6 +8,7 @@
 				table[i][j] = 0;
 		}
 	}
+    
 	Board::~Board(){
 		for (int i = 0; i < 10; i++)
 			delete table[i];
@@ -22,10 +22,12 @@
 			return '.';
 		if (sign == O)
 			return 'O';
-		return '-';
+		return ' ';
 	}
 
 	char Board::getCell(int x, int y){
+        if (!(x >= 0 && x < 10 && y >= 0 && y < 10))
+            return ' ';
 		if (table[x][y] == X)
 			return 'X';
 		if (table[x][y] == dot)
@@ -34,8 +36,10 @@
 	}
 
     void Board::move(int x, int y, int sign){
-    	table[x][y] = sign;
+        if (getCell(x, y) == '.' && isWin() == GAME_IN_PROCESS)
+    	   table[x][y] = sign;
     }; 
+
     bool Board::canMove(int x, int y, char sign) {
     	if ((x >= 0 && x < 10) && 
     		(y >= 0 && y < 10) && 
@@ -47,31 +51,49 @@
 
     Board::state Board::isWin(){
     	int sum = 0;
+
+        //Проверяем, нет ли горизонтальной последовательности символов достаточной длины.
     	for (int i = 0; i < 10; i++){
     		for (int j = 0; j < 10; j++){
+
     			if (table[i][j] == dot || (sum < 0 && table[i][j] == X) || (sum > 0 && table[i][j] == O))
-    				sum = 0;
-    			else
+    				sum = table[i][j];
+                else
     				sum += table[i][j];
-    			if (sum == 4) return x_wins;
-    			if (sum == -4) return y_wins;
+
+    			if (sum == 5) return x_wins;
+
+    			if (sum == -5) return y_wins;
+
     		}
+
     		sum = 0;
     	}
+
+        //Проверяем, нет ли вертикальной последовательности символов достаточной длины.
     	for (int j = 0; j < 10; j++){
     		for (int i = 0; i < 10; i++){
+
     			if (table[i][j] == dot || (sum < 0 && table[i][j] == X) || (sum > 0 && table[i][j] == O))
-    				sum = 0;
+    				sum = table[i][j];
     			else
     				sum += table[i][j];
+
     			if (sum == 5) return x_wins;
+
     			if (sum == -5) return y_wins;
+
     		}
+
     		sum = 0;
     	}
+
+        //Проверяем, есть ли незанятые поля.
     	for (int i = 0; i < 10; i++)
     		for (int j = 0; j < 10; j++)
     			if (table[i][j] == dot)
     				return GAME_IN_PROCESS;
+
+        //Иначе, остаётся только ничья.
     	return draw;
     }; 

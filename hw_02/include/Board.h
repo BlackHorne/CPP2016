@@ -6,6 +6,7 @@ class  Board {
 private:
 	int** table;
 	enum cell {O = -1, dot = 0, X = 1};
+	
 public:
 	enum state {GAME_IN_PROCESS = 0, x_wins, y_wins, draw};
 	
